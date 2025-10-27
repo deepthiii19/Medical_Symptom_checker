@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Assessment Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .patient-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .info-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .symptoms-list {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .symptoms-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .symptoms-list li {
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .symptoms-list li:before {
+            content: "✓ ";
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .diagnosis-section {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+        }
+
+        .diagnosis-section h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .diagnosis-section p {
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .specialist-section {
+            background: #d1ecf1;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .specialist-section h3 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .specialist-section p {
+            color: #0c5460;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .doctor-icon {
+            font-size: 3em;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #1565c0;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Health Assessment Results</h1>
+
+        {% if error %}
+        <div class="error-message">
+            <h3>⚠️ Error</h3>
+            <p>{{ error }}</p>
+        </div>
+        {% else %}
+
+        <div class="result-card">
+            <h2>Patient Information</h2>
+            <div class="patient-info">
+                <div class="info-item">
+                    <strong>Name</strong>
+                    <span>{{ name }}</span>
+                </div>
+                <div class="info-item">
+                    <strong>Age</strong>
+                    <span>{{ age }} years</span>
+                </div>
+                <div class="info-item">
+                    <strong>Gender</strong>
+                    <span>{{ gender.title() }}</span>
+                </div>
+            </div>
+
+            <h3>Reported Symptoms</h3>
+            <div class="symptoms-list">
+                <ul>
+                    {% for symptom in symptoms %}
+                    <li>{{ symptom.replace('_', ' ').title() }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="diagnosis-section">
+            <h3>💡 Health Assessment</h3>
+            <p>{{ message }}</p>
+        </div>
+
+        <div class="specialist-section">
+            <div class="doctor-icon">👨‍⚕️</div>
+            <h3>Recommended Specialist</h3>
+            <p><strong>{{ specialist }}</strong></p>
+            <p>We suggest scheduling an appointment with a {{ specialist }} for a comprehensive evaluation and personalized care plan.</p>
+        </div>
+
+        <div class="disclaimer">
+            <strong>⚠️ Important Disclaimer:</strong> This assessment is for informational purposes only and should not replace professional medical advice. Please consult with a qualified healthcare provider for proper diagnosis and treatment.
+        </div>
+
+        {% endif %}
+
+        <a href="/" class="back-btn">← Check Another Patient</a>
+    </div>
+</body>
+</html>
