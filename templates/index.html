@@ -13,22 +13,22 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
         h1 {
-            color: #667eea;
+            color: #00796b;
             text-align: center;
             margin-bottom: 10px;
             font-size: 2.5em;
@@ -55,20 +55,83 @@
 
         input[type="text"],
         input[type="number"],
-        select {
+        select,
+        textarea {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 16px;
             transition: border-color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         input[type="text"]:focus,
         input[type="number"]:focus,
-        select:focus {
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #00796b;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .nlp-section {
+            background: #e0f2f1;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid #00796b;
+        }
+
+        .nlp-section h3 {
+            color: #00796b;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .nlp-section p {
+            color: #004d40;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: #00796b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: #666;
+            font-weight: 600;
         }
 
         .symptoms-grid {
@@ -105,7 +168,7 @@
         .submit-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00796b 0%, #004d40 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -117,19 +180,19 @@
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 121, 107, 0.4);
         }
 
         .info-box {
-            background: #e3f2fd;
+            background: #fff3cd;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            border-left: 4px solid #2196f3;
+            border-left: 4px solid #ffc107;
         }
 
         .info-box p {
-            color: #1565c0;
+            color: #856404;
             margin: 0;
         }
     </style>
@@ -137,26 +200,26 @@
 <body>
     <div class="container">
         <h1>🏥 Medical Symptom Checker</h1>
-        <p class="subtitle">Enter your details and symptoms for health guidance</p>
+        <p class="subtitle">AI-Powered Health Guidance with Natural Language Processing</p>
 
         <div class="info-box">
-            <p>⚠️ This tool provides general guidance only. Always consult a healthcare professional for accurate diagnosis and treatment.</p>
+            <p>⚠️ This tool provides general guidance only. Always consult a healthcare professional for accurate diagnosis.</p>
         </div>
 
         <form action="/predict" method="POST">
             <div class="form-group">
-                <label for="name">Full Name *</label>
-                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                <label for="name">Full Name (Optional)</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name">
             </div>
 
             <div class="form-group">
-                <label for="age">Age *</label>
-                <input type="number" id="age" name="age" required min="1" max="120" placeholder="Enter your age">
+                <label for="age">Age (Optional)</label>
+                <input type="number" id="age" name="age" min="1" max="120" placeholder="Enter your age">
             </div>
 
             <div class="form-group">
-                <label for="gender">Gender *</label>
-                <select id="gender" name="gender" required>
+                <label for="gender">Gender (Important for accurate prediction)</label>
+                <select id="gender" name="gender">
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -164,8 +227,20 @@
                 </select>
             </div>
 
+            <div class="nlp-section">
+                <h3>🤖 Describe Your Symptoms <span class="feature-badge">NLP Powered</span></h3>
+                <p>Type your symptoms naturally. Example: "I have yellowing of eyes and stomach swelling"</p>
+                <textarea id="symptom_text" name="symptom_text"
+                          placeholder="Example: I have yellowing of eyes, dark urine, and stomach swelling."></textarea>
+                <small style="color: #004d40; font-style: italic;">💡 Just describe how you feel!</small>
+            </div>
+
+            <div class="divider">
+                <span>OR Select Symptoms Below</span>
+            </div>
+
             <div class="form-group">
-                <label>Select Your Symptoms * (Choose all that apply)</label>
+                <label>Select Symptoms from List (Optional)</label>
                 <div class="symptoms-grid">
                     {% for symptom in symptoms %}
                     <div class="symptom-item">
@@ -176,7 +251,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">Get Health Guidance</button>
+            <button type="submit" class="submit-btn">Get Health Guidance 🔍</button>
         </form>
     </div>
 </body>

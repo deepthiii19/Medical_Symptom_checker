@@ -13,22 +13,22 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
         h1 {
-            color: #667eea;
+            color: #00796b;
             text-align: center;
             margin-bottom: 30px;
         }
@@ -38,7 +38,7 @@
             padding: 25px;
             border-radius: 12px;
             margin-bottom: 20px;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #00796b;
         }
 
         .result-card h2 {
@@ -62,9 +62,39 @@
         }
 
         .info-item strong {
-            color: #667eea;
+            color: #00796b;
             display: block;
             margin-bottom: 5px;
+        }
+
+        .nlp-result {
+            background: #e0f2f1;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid #00796b;
+        }
+
+        .nlp-result h3 {
+            color: #00796b;
+            margin-bottom: 10px;
+        }
+
+        .nlp-result p {
+            color: #004d40;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .nlp-badge {
+            display: inline-block;
+            background: #00796b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-top: 10px;
         }
 
         .symptoms-list {
@@ -86,7 +116,7 @@
 
         .symptoms-list li:before {
             content: "✓ ";
-            color: #4caf50;
+            color: #00796b;
             font-weight: bold;
             margin-right: 8px;
         }
@@ -107,24 +137,99 @@
         .diagnosis-section p {
             color: #856404;
             line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .disease-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #ffc107;
+        }
+
+        .disease-card strong {
+            color: #856404;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-top: 5px;
+        }
+
+        .badge-matches {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-confidence {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .unable-determine {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .unable-determine strong {
+            color: #856404;
+        }
+
+        .unable-determine ul {
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
+        .unable-determine li {
+            color: #856404;
+            margin-bottom: 5px;
         }
 
         .specialist-section {
-            background: #d1ecf1;
+            background: #e3f2fd;
             padding: 20px;
             border-radius: 12px;
-            border-left: 5px solid #17a2b8;
+            border-left: 5px solid #2196f3;
         }
 
         .specialist-section h3 {
-            color: #0c5460;
+            color: #1565c0;
             margin-bottom: 10px;
         }
 
         .specialist-section p {
-            color: #0c5460;
+            color: #0d47a1;
             font-size: 1.1em;
             line-height: 1.6;
+        }
+
+        .specialist-section ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .specialist-section li {
+            padding: 10px;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #2196f3;
+        }
+
+        .specialist-section li strong {
+            color: #1565c0;
         }
 
         .doctor-icon {
@@ -136,7 +241,7 @@
         .back-btn {
             display: inline-block;
             padding: 12px 30px;
-            background: #667eea;
+            background: #00796b;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -146,7 +251,7 @@
 
         .back-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 121, 107, 0.4);
         }
 
         .error-message {
@@ -189,7 +294,7 @@
                 </div>
                 <div class="info-item">
                     <strong>Age</strong>
-                    <span>{{ age }} years</span>
+                    <span>{{ age }}</span>
                 </div>
                 <div class="info-item">
                     <strong>Gender</strong>
@@ -197,7 +302,15 @@
                 </div>
             </div>
 
-            <h3>Reported Symptoms</h3>
+            {% if text_input %}
+            <div class="nlp-result">
+                <h3>🤖 Your Description (NLP Processed)</h3>
+                <p>"{{ text_input }}"</p>
+                <span class="nlp-badge">✨ AI extracted {{ extracted_count }} symptoms</span>
+            </div>
+            {% endif %}
+
+            <h3>Identified Symptoms</h3>
             <div class="symptoms-list">
                 <ul>
                     {% for symptom in symptoms %}
@@ -208,19 +321,58 @@
         </div>
 
         <div class="diagnosis-section">
-            <h3>💡 Health Assessment</h3>
+            <h3>💡 Possible Health Conditions</h3>
+
+            {% if predicted_diseases[0].disease == 'Unable to Determine' %}
+            <div class="unable-determine">
+                <strong>⚠️ Cannot Determine Disease</strong>
+                <p>{{ message }}</p>
+                <p style="margin-top: 10px;"><strong>What to do:</strong></p>
+                <ul>
+                    <li>Try describing your symptoms in more detail</li>
+                    <li>Include when symptoms started and how they're progressing</li>
+                    <li>Mention which parts of your body are affected</li>
+                    <li><strong>Consult a General Physician for professional evaluation</strong></li>
+                </ul>
+            </div>
+            {% else %}
             <p>{{ message }}</p>
+
+            {% if predicted_diseases and predicted_diseases|length > 0 %}
+            <div style="margin-top: 20px;">
+                <h4 style="color: #856404; margin-bottom: 10px;">Detailed Analysis:</h4>
+                {% for pred in predicted_diseases %}
+                <div class="disease-card">
+                    <strong>{{ loop.index }}. {{ pred.disease }}</strong>
+                    <div>
+                        <span class="badge badge-matches">{{ pred.matches }} matching symptoms</span>
+                        <span class="badge badge-confidence">{{ pred.confidence }}% match</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
         </div>
 
         <div class="specialist-section">
             <div class="doctor-icon">👨‍⚕️</div>
-            <h3>Recommended Specialist</h3>
-            <p><strong>{{ specialist }}</strong></p>
-            <p>We suggest scheduling an appointment with a {{ specialist }} for a comprehensive evaluation and personalized care plan.</p>
+            <h3>Recommended Specialists</h3>
+            {% if specialists|length == 1 %}
+                <p><strong>{{ specialists[0] }}</strong></p>
+                <p>We suggest scheduling an appointment with a {{ specialists[0] }} for proper evaluation.</p>
+            {% else %}
+                <p>You may consult one of these specialists based on your symptoms:</p>
+                <ul>
+                    {% for specialist in specialists %}
+                    <li><strong>{{ specialist }}</strong></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <div class="disclaimer">
-            <strong>⚠️ Important Disclaimer:</strong> This assessment is for informational purposes only and should not replace professional medical advice. Please consult with a qualified healthcare provider for proper diagnosis and treatment.
+            <strong>⚠️ Important Disclaimer:</strong> This is AI-powered guidance only. Please consult a qualified healthcare provider for proper diagnosis and treatment.
         </div>
 
         {% endif %}
